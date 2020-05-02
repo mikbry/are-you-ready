@@ -17,7 +17,7 @@
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
       showChatRoom();
 
-      const signaling = new WebSocket('ws://127.0.0.1:1337');
+      const signaling = new WebSocket('ws://192.168.1.21:1337');
       const peerConnection = createPeerConnection(signaling);
 
       addMessageHandler(signaling, peerConnection);
@@ -36,7 +36,7 @@
     });
     
     peerConnection.onnegotiationneeded = async () => {
-     await createAndSendOffer();
+     await createAndSendOffer(signaling, peerConnection);
     };
 
     peerConnection.onicecandidate = (iceEvent) => {

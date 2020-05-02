@@ -14,31 +14,17 @@ let clients = [];
 
 wsServer.on('request', request => {
   const connection = request.accept();
-  const id = Math.floor(Math.random() * 100);
-
-  clients.forEach(client => client.connection.send(JSON.stringify({
-    client: id,
-    text: 'I am now connected',
-  })));
-
+  const id = (Math.random() * 10000);
   clients.push({ connection, id });
 
   connection.on('message', message => {
-    console.log('got Message', message);
+    console.log(message);
     clients
       .filter(client => client.id !== id)
-      .forEach(client => client.connection.send(JSON.stringify({
-        client: id,
-        text: message.utf8Data,
-      })));
+      .forEach(client => client.connection.send(message.utf8Data));
   });
 
   connection.on('close', () => {
     clients = clients.filter(client => client.id !== id);
-    clients.forEach(client => client.connection.send(JSON.stringify({
-      client: id,
-      text: 'I disconnected',
-    })));
   });
 });
-
