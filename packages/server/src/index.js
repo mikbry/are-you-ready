@@ -24,6 +24,7 @@ wsServer.on('request', request => {
   clients.push({ connection, id });
 
   connection.on('message', message => {
+    console.log('got Message', message);
     clients
       .filter(client => client.id !== id)
       .forEach(client => client.connection.send(JSON.stringify({

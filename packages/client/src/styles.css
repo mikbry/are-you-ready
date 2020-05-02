@@ -1,17 +1,46 @@
-body {
-  text-align: center;
+html, body {
+  min-height: 100% !important;
+  height: 100%;
+  margin: 0;
 }
 
-video {
-  width: 500px;
-  height: 500px;
-  margin: 20px;
+body {
+background-color:#01284a;
+padding: 8px;
 }
 
 button {
-  padding: 5px;
-  background-color: seagreen;
-  color: white;
-  border-radius: 3px;
-  font-weight: bold;
+display: block;
+margin: auto;
+position: relative;
+top: 40%;
+padding: 10px;
+font-size: 16px;
+background-color: #000f1c;
+border-radius: 3px;
+color: white;
+font-weight: bold;
+cursor: pointer;
+}
+
+video {
+width: 100%;
+}
+
+#videos {
+display: grid;
+grid-gap: 16px;
+width: 100%;
+grid-template-columns: 1fr 3fr;
+}
+
+#self-view {
+grid-column: 1;
+background-color: black;
+}
+
+#remote-view {
+grid-column: 2;
+background-color: black;
+height: 95vh;
 }

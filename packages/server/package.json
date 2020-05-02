@@ -6,6 +6,9 @@
   "author": "Mik",
   "license": "See license",
   "private": true,
+  "scripts": {
+    "start": "node src/index.js"
+  },
   "dependencies": {
     "websocket": "^1.0.31"
   }
