@@ -5,5 +5,5 @@ areyouready.live
 Live music streaming platform
 
 TODO:
-- Install Jitsi on a server
-- Create a custom frontend for Jitsi
+[ ] - Minimal client / server webrtc
+[ ] - Create a MVP

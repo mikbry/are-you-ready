@@ -1,0 +1,12 @@
+{
+  "name": "@are-your-ready/server",
+  "version": "0.0.0",
+  "description": "Are you ready ? server",
+  "main": "index.js",
+  "author": "Mik",
+  "license": "See license",
+  "private": true,
+  "dependencies": {
+    "websocket": "^1.0.31"
+  }
+}

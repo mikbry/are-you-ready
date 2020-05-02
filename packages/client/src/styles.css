@@ -1,0 +1,17 @@
+body {
+  text-align: center;
+}
+
+video {
+  width: 500px;
+  height: 500px;
+  margin: 20px;
+}
+
+button {
+  padding: 5px;
+  background-color: seagreen;
+  color: white;
+  border-radius: 3px;
+  font-weight: bold;
+}

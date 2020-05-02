@@ -1,0 +1,13 @@
+{
+  "name": "are-you-ready",
+  "version": "0.0.0",
+  "description": "Are you ready ? Ok let's play, live !",
+  "main": "index.js",
+  "repository": "https://github.com/mikbry/are-you-ready.git",
+  "author": "mik@miklabs.com",
+  "license": "See Licence",
+  "private": true,
+  "scripts": {
+    "start": "serve packages/client/src"
+  }
+}
