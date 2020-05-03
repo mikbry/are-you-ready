@@ -12,12 +12,15 @@
   "private": true,
   "scripts": {
     "start": "serve packages/client/src",
-    "test": "bash ./scripts/test.sh"
+    "test": "env-cmd  -x echo \\$APP_NAME",
+    "docker:clean": "docker-compose -f ./infra/docker-compose.dev.yml rm && docker-compose -f ./infra/docker-compose.dev.yml pull",
+    "docker:start": "docker-compose -f ./infra/docker-compose.dev.yml up"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
     "cross-env": "^7.0.2",
+    "env-cmd": "^10.1.0",
     "husky": "^4.2.5",
     "lerna": "^3.20.2",
     "rimraf": "^3.0.2"
