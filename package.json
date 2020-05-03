@@ -14,7 +14,8 @@
     "start": "serve packages/client/src",
     "test": "env-cmd  -x echo \\$APP_NAME",
     "docker:clean": "docker-compose -f ./infra/docker-compose.dev.yml rm && docker-compose -f ./infra/docker-compose.dev.yml pull",
-    "docker:start": "docker-compose -f ./infra/docker-compose.dev.yml up"
+    "docker:start": "docker-compose -f ./infra/docker-compose.dev.yml up",
+    "docker:build": "docker-compose -f ./infra/docker-compose.yml build"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",

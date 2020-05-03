@@ -2,7 +2,7 @@ version: '3'
 
 services:
   backend:
-    image: opla/ps:publisher-latest
+    image: ${CONTAINER_NAME}:backend-latest
     volumes:
       - ../public/upload:/usr/src/app/upload
       - ./public/${APP_UPLOAD_PATH}:/app/${APP_UPLOAD_PATH}
