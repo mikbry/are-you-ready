@@ -3,14 +3,12 @@ version: '3.0'
 services:
   backend:
     build:
-      context: ../backend
+      context: ../packages/backend
       dockerfile: Dockerfile-dev
       args:
         buildno: 1
     volumes:
-      - ../backend:/usr/src/app:delegated
-      - ./backend/package.json:/opt/node_app/package.json
-      - ./backend/yarn.lock:/opt/node_app/yarn.lock
+      - ../packages/backend:/usr/src/app:delegated
       - /usr/src/app/node_modules
       - ../public/${APP_UPLOAD_PATH}:/usr/src/app/${APP_UPLOAD_PATH}
     restart: always
@@ -36,7 +34,7 @@ services:
       - 9229:9229
     links:
       - mongo
-    command: yarn dev
+    command: yarn start
     networks: 
       - private
 
