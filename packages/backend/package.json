@@ -1,5 +1,5 @@
 {
-  "name": "@are-your-ready/server",
+  "name": "@are-you-ready/server",
   "version": "0.0.0",
   "description": "Are you ready ? server",
   "main": "index.js",

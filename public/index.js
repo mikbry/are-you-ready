@@ -18,12 +18,18 @@
       showChatRoom();
 
       const signaling = new WebSocket('wss://192.168.1.21/api');
-      const peerConnection = createPeerConnection(signaling);
+      signaling.onopen = () => {
+        const peerConnection = createPeerConnection(signaling);
 
-      addMessageHandler(signaling, peerConnection);
-
-      stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
-      document.getElementById('self-view').srcObject = stream;
+        addMessageHandler(signaling, peerConnection);
+  
+        stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
+        document.getElementById('self-view').srcObject = stream;
+      };
+      signaling.onerror = err => {
+        console.error(err);
+        signaling.close();
+      };
 
     } catch (err) {
       console.error(err);
