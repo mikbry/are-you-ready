@@ -6,8 +6,20 @@
   "repository": "https://github.com/mikbry/are-you-ready.git",
   "author": "mik@miklabs.com",
   "license": "See Licence",
+  "workspaces": [
+    "packages/*"
+  ],
   "private": true,
   "scripts": {
-    "start": "serve packages/client/src"
+    "start": "serve packages/client/src",
+    "test": "bash ./scripts/test.sh"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "cross-env": "^7.0.2",
+    "husky": "^4.2.5",
+    "lerna": "^3.20.2",
+    "rimraf": "^3.0.2"
   }
 }
