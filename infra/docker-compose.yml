@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  backend:
+    image: opla/ps:publisher-latest
+    volumes:
+      - ../public/upload:/usr/src/app/upload
+      - ./public/${APP_UPLOAD_PATH}:/app/${APP_UPLOAD_PATH}
+    environment:
+      - NODE_ENV
+      - APP_NAME
+      - APP_BACKEND_PORT
+      - APP_DATABASE_PROVIDER
+      - APP_DATABASE_NAME
+      - APP_DATABASE_PORT
+      - APP_DATABASE_URL
+      - APP_DATABASE_SECURE
+      - APP_DATABASE_SECURE_VALIDATE
+      - APP_DATABASE_SECURE_PASS
+      - APP_CERTIFICATES_PATH
+      - APP_UPLOAD_PATH
+      - APP_UPLOAD_MAXSIZE
+      - APP_USE_COOKIES
+    ports:
+      - ${APP_BACKEND_PORT}:${APP_BACKEND_PORT}
+    links:
+      - mongo
+    command: bash -c "yarn configure && yarn start"
+    networks: 
+      - private
+
+  mongo:
+    image: mongo
+    restart: always
+    networks: 
+      - private
+
+  web:
+    build: nginx
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+    networks: 
+      - private
+      - public
+    volumes:
+      - ../public:/etc/nginx/www
+      - ./certs:/etc/nginx/certs
+    environment:
+      - APP_FRONT_DOMAIN
+      - APP_API_DOMAIN
+      - APP_NAME
+      - APP_BACKEND_PORT
+      - APP_UPLOAD_MAXSIZE
+
+networks:
+  public: 
+  private: 

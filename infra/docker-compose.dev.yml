@@ -1,0 +1,72 @@
+version: '3.0'
+
+services:
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile-dev
+      args:
+        buildno: 1
+    volumes:
+      - ../backend:/usr/src/app:delegated
+      - ./backend/package.json:/opt/node_app/package.json
+      - ./backend/yarn.lock:/opt/node_app/yarn.lock
+      - /usr/src/app/node_modules
+      - ../public/${APP_UPLOAD_PATH}:/usr/src/app/${APP_UPLOAD_PATH}
+    restart: always
+    expose:
+      - ${APP_BACKEND_PORT}      
+    environment:
+      - NODE_ENV
+      - APP_NAME
+      - APP_BACKEND_PORT
+      - APP_DATABASE_PROVIDER
+      - APP_DATABASE_NAME
+      - APP_DATABASE_PORT
+      - APP_DATABASE_URL
+      - APP_DATABASE_SECURE
+      - APP_DATABASE_SECURE_VALIDATE
+      - APP_DATABASE_SECURE_PASS
+      - APP_CERTIFICATES_PATH
+      - APP_UPLOAD_PATH
+      - APP_UPLOAD_MAXSIZE
+      - APP_USE_COOKIES
+    ports:
+      - 3032:3032
+      - 9229:9229
+    links:
+      - mongo
+    command: yarn dev
+    networks: 
+      - private
+
+  mongo:
+    image: mongo
+    restart: always
+    networks: 
+      - private
+
+  web:
+    build: nginx
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - 80:80
+      - 443:443
+    networks: 
+      - private
+      - public
+    volumes:
+      - ../public:/etc/nginx/www
+      - ./certs:/etc/nginx/certs
+    environment:
+      - APP_FRONT_DOMAIN
+      - APP_API_DOMAIN
+      - APP_NAME
+      - APP_BACKEND_PORT
+      - APP_UPLOAD_MAXSIZE
+
+networks:
+  public: 
+  private: 
