@@ -15,7 +15,14 @@ server {
 server {
     listen 80 default_server;
     # listen [::]:80 default_server;
-    return 301 https://$host$request_uri;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
 }
 
 server {
@@ -24,6 +31,8 @@ server {
 
   ssl_certificate /etc/nginx/certs/main.crt;
   ssl_certificate_key /etc/nginx/certs/main.key;
+  include /etc/letsencrypt/options-ssl-nginx.conf;
+  ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
   underscores_in_headers on;
 

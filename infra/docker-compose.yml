@@ -2,7 +2,7 @@ version: '3'
 
 services:
   backend:
-    image: ${CONTAINER_NAME}:backend-latest
+    image: ${REGISTRY_SERVER}${COMPOSE_PROJECT_NAME}_backend:${IMAGE_VERSION}
     volumes:
       - ../public/upload:/usr/src/app/upload
       - ./public/${APP_UPLOAD_PATH}:/app/${APP_UPLOAD_PATH}
@@ -36,7 +36,7 @@ services:
       - private
 
   web:
-    build: nginx
+    image: nginx
     restart: always
     depends_on:
       - backend
@@ -48,6 +48,7 @@ services:
       - public
     volumes:
       - ../public:/etc/nginx/www
+      - ./letsencrypt:/etc/letsencrypt
       - ./certs:/etc/nginx/certs
     environment:
       - APP_FRONT_DOMAIN
@@ -55,7 +56,13 @@ services:
       - APP_NAME
       - APP_BACKEND_PORT
       - APP_UPLOAD_MAXSIZE
-
+certbot:
+    image: certbot/certbot
+    restart: unless-stopped
+    volumes:
+      - ./letsencrypt:/etc/letsencrypt
+      - ./certs:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 networks:
   public: 
   private: 

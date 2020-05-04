@@ -57,6 +57,7 @@ services:
       - public
     volumes:
       - ../public:/etc/nginx/www
+      - ./letsencrypt:/etc/letsencrypt
       - ./certs:/etc/nginx/certs
     environment:
       - APP_FRONT_DOMAIN
