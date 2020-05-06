@@ -1,13 +1,12 @@
 # Heroku deployment test
-setup:
-  command:
-    - cp -rf ./public ./infra
 
 build:
-    docker:
-      web: infra/nginx/Dockerfile
-      app: packages/backend/Dockerfile-dev
-
+  docker:
+    web: infra/nginx/Dockerfile
+    app: packages/backend/Dockerfile-dev
+  command:
+    - cp -rf ./public ./infra
+  
 release:
   image: web
     
