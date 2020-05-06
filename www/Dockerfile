@@ -2,7 +2,7 @@ FROM nginx:1.17.4
 
 ENV DOLLAR $
 
-RUN echo '${WEB_CONF} ${WEB_TEMPLATE}'
+RUN echo "${WEB_CONF} ${WEB_TEMPLATE}"
 RUN rm -rf /etc/nginx/nginx.conf
 RUN rm -rf /etc/nginx/conf.d/default.conf
 COPY ./${WEB_TEMPLATE} /etc/nginx/conf.d/${WEB_TEMPLATE}
