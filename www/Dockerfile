@@ -2,7 +2,7 @@ FROM nginx:1.17.4
 
 RUN rm /etc/nginx/conf.d/default.conf
 COPY ./${WEB_TEMPLATE} /etc/nginx/conf.d/${WEB_TEMPLATE}
-COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY ./${WEB_CONF} /etc/nginx/nginx.conf
 ADD ./public /etc/nginx/www
 
 ENV DOLLAR $
