@@ -1,10 +1,11 @@
 FROM nginx:1.17.4
 
 RUN rm /etc/nginx/conf.d/default.conf
-COPY ./default.template /etc/nginx/conf.d/default.template
+COPY ./${WEB_TEMPLATE} /etc/nginx/conf.d/${WEB_TEMPLATE}
 COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY ../../public /etc/nginx/www
 
 ENV DOLLAR $
 
 # Reload nginx every 6h
-CMD ["/bin/bash", "-c", "envsubst < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g 'daemon off;'"]
+CMD ["/bin/bash", "-c", "envsubst < /etc/nginx/conf.d/${WEB_TEMPLATE} > /etc/nginx/conf.d/default.conf && while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g 'daemon off;'"]

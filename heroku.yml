@@ -1,0 +1,25 @@
+# Heroku deployment test
+setup:
+  config:
+    APP_NAME: AYR
+  APP_BACKEND_PORT: 3032
+  APP_DATABASE_PROVIDER: MongoDB
+  APP_DATABASE_NAME: Ayr
+  APP_DATABASE_URL: mongo
+  APP_UPLOAD_PATH: upload
+  APP_UPLOAD_MAXSIZE: 50M
+  COMPOSE_PROJECT_NAME: Areyouready
+  IMAGE_VERSION: latest
+  WEB_TEMPLATE: default.nossl.template
+build:
+    docker:
+      web: infra/nginx/Dockerfile
+      app: packages/backend/Dockerfile-dev
+
+release:
+  image: app
+    
+run:
+  web: envsubst < /etc/nginx/conf.d/default.nossl.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off
+  app: node src/index.js
+    

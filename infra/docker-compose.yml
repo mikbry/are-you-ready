@@ -2,10 +2,16 @@ version: '3'
 
 services:
   backend:
-    image: ${REGISTRY_SERVER}${COMPOSE_PROJECT_NAME}_backend:${IMAGE_VERSION}
+    image: ${COMPOSE_PROJECT_NAME}_backend:prod
+    build:
+      context: ../packages/backend
+      dockerfile: Dockerfile
+      args:
+        buildno: 1
     volumes:
-      - ../public/upload:/usr/src/app/upload
       - ./public/${APP_UPLOAD_PATH}:/app/${APP_UPLOAD_PATH}
+    expose:
+      - ${APP_BACKEND_PORT}    
     environment:
       - NODE_ENV
       - APP_NAME
@@ -25,7 +31,7 @@ services:
       - ${APP_BACKEND_PORT}:${APP_BACKEND_PORT}
     links:
       - mongo
-    command: bash -c "yarn configure && yarn start"
+    command: bash -c "yarn start"
     networks: 
       - private
 
@@ -36,7 +42,8 @@ services:
       - private
 
   web:
-    image: nginx
+    image: ${COMPOSE_PROJECT_NAME}_web:prod
+    build: nginx
     restart: always
     depends_on:
       - backend
@@ -47,7 +54,6 @@ services:
       - private
       - public
     volumes:
-      - ../public:/etc/nginx/www
       - ./letsencrypt:/etc/letsencrypt
       - ./certs:/etc/nginx/certs
     environment:
