@@ -1,12 +1,8 @@
 
 server_tokens off;
-add_header X-Frame-Options SAMEORIGIN;
-add_header X-Content-Type-Options nosniff;
-add_header X-XSS-Protection "1; mode=block";
 
 server {
   listen $PORT default_server;
-  # listen [::]:80 default_server;
   underscores_in_headers on;
 
   location / {
@@ -23,12 +19,8 @@ server {
         proxy_pass http://${APP_BACKEND_HOST}:${APP_BACKEND_PORT};
         proxy_set_header Upgrade ${DOLLAR}http_upgrade;
         proxy_set_header Connection ${DOLLAR}connection_upgrade;
-        proxy_set_header X-Forwarded-Proto https;
         proxy_http_version 1.1;
-        proxy_ssl_session_reuse off;
         proxy_redirect off;
         client_max_body_size ${APP_UPLOAD_MAXSIZE};
     }
-  
-  add_header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload";
 }
