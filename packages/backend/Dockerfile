@@ -7,6 +7,6 @@ COPY . /app
 
 RUN yarn
 
-RUN yarn compile
+# RUN yarn compile
 
 CMD yarn start

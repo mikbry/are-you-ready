@@ -1,4 +1,6 @@
 FROM nginx:1.17.10-alpine
+ARG WEB_CONF
+ARG WEB_TEMPLATE
 
 ENV DOLLAR $
 

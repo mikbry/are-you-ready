@@ -10,6 +10,6 @@ build:
     IMAGE_VERSION: latest
   docker:
     web: www/Dockerfile-heroku
-    api: packages/backend/Dockerfile-dev
+    api: packages/backend/Dockerfile
   
     
