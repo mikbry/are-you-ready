@@ -11,8 +11,5 @@ build:
   docker:
     web: www/Dockerfile-heroku
     api: packages/backend/Dockerfile-dev
-    
-run:
-  web: bin/bash -c envsubst ${PORT} < /etc/nginx/conf.d/${WEB_TEMPLATE} > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
-  api: node src/index.js
+  
     
