@@ -1,6 +1,7 @@
 FROM nginx:1.17.4
 ARG WEB_CONF
 ARG WEB_TEMPLATE
+ARG PORT
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 RUN echo "${WEB_CONF} ${WEB_TEMPLATE}"
