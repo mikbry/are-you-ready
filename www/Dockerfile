@@ -1,7 +1,8 @@
 FROM nginx:1.17.4
 
-RUN rm /etc/nginx/nginx.conf
-RUN rm /etc/nginx/conf.d/default.conf
+RUN echo '${WEB_CONF} ${WEB_TEMPLATE}'
+RUN rm -rf /etc/nginx/nginx.conf
+RUN rm -rf /etc/nginx/conf.d/default.conf
 COPY ./${WEB_TEMPLATE} /etc/nginx/conf.d/${WEB_TEMPLATE}
 COPY ./${WEB_CONF} /etc/nginx/nginx.conf
 ADD ./public /etc/nginx/www
