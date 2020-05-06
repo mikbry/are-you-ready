@@ -9,7 +9,7 @@ build:
     COMPOSE_PROJECT_NAME: Areyouready
     IMAGE_VERSION: latest
   docker:
-    web: www/Dockerfile
+    web: www/Dockerfile-heroku
     app: packages/backend/Dockerfile-dev
     
 release:
