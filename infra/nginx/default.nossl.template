@@ -5,35 +5,8 @@ add_header X-Content-Type-Options nosniff;
 add_header X-XSS-Protection "1; mode=block";
 
 server {
-# Fix Firefox corrupted content
-    listen 80;
-    # listen [::]:80;
-    server_name localhost 127.0.0.1;
-    return 301 https://localhost$request_uri;
-}
-
-server {
-    listen 80 default_server;
-    # listen [::]:80 default_server;
-
-    location /.well-known/acme-challenge/ {
-        root /var/www/certbot;
-    }
-
-    location / {
-        return 301 https://$host$request_uri;
-    }
-}
-
-server {
-  listen 443 ssl http2;
-  # listen [::]:443 ssl  http2;
-
-  ssl_certificate /etc/nginx/certs/main.crt;
-  ssl_certificate_key /etc/nginx/certs/main.key;
-  include /etc/letsencrypt/options-ssl-nginx.conf;
-  ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
-
+  listen 80 default_server;
+  # listen [::]:80 default_server;
   underscores_in_headers on;
 
   location / {
