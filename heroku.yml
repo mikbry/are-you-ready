@@ -3,6 +3,7 @@
 build:
   config:
     APP_NAME: AYR
+    APP_BACKEND_HOST: localhost
     APP_BACKEND_PORT: 3032
     WEB_TEMPLATE: default.nossl.template
     WEB_CONF: nginx.min.conf

@@ -47,7 +47,7 @@ server {
 
     location ~ ^/api($|/(.*)) {
         rewrite ^/api($|/(.*)) /$2 break;
-        proxy_pass http://backend:${APP_BACKEND_PORT};
+        proxy_pass http://${APP_BACKEND_HOST}:${APP_BACKEND_PORT};
         proxy_set_header Upgrade ${DOLLAR}http_upgrade;
         proxy_set_header Connection ${DOLLAR}connection_upgrade;
         proxy_set_header X-Forwarded-Proto https;
