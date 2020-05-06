@@ -1,4 +1,6 @@
 FROM node:lts-stretch AS builder
+ARG NODE_ENV=development
+ENV NODE_ENV=${NODE_ENV}
 
 RUN mkdir /app
 WORKDIR /app
