@@ -4,8 +4,8 @@ build:
   config:
     APP_NAME: AYR
     APP_BACKEND_PORT: 3032
-    WEB_TEMPLATE: default.template
-    WEB_CONF: nginx.conf
+    WEB_TEMPLATE: default.nossl.template
+    WEB_CONF: nginx.min.conf
     COMPOSE_PROJECT_NAME: Areyouready
     IMAGE_VERSION: latest
   docker:
