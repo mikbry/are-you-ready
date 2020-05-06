@@ -10,8 +10,9 @@ build:
     IMAGE_VERSION: latest
   docker:
     web: www/Dockerfile-heroku
-    worker: packages/backend/Dockerfile-dev
+    api: packages/backend/Dockerfile-dev
     
-
-
+run:
+  web: bin/bash -c envsubst < /etc/nginx/conf.d/${WEB_TEMPLATE} > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
+  api: node src/index.js
     
