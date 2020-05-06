@@ -1,5 +1,7 @@
 # Heroku deployment test
-# TODO setup
+setup:
+  command:
+    - cp -rf ./public ./infra
 
 build:
     docker:
