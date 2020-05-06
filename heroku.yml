@@ -10,7 +10,7 @@ build:
     IMAGE_VERSION: latest
   docker:
     web: www/Dockerfile-heroku
-    app: packages/backend/Dockerfile-dev
+    worker: packages/backend/Dockerfile-dev
     
 run:
   web: envsubst < /etc/nginx/conf.d/default.nossl.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off'

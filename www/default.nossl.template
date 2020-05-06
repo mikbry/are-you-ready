@@ -5,7 +5,7 @@ add_header X-Content-Type-Options nosniff;
 add_header X-XSS-Protection "1; mode=block";
 
 server {
-  listen 80 default_server;
+  listen $PORT default_server;
   # listen [::]:80 default_server;
   underscores_in_headers on;
 
