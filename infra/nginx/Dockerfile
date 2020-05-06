@@ -3,7 +3,7 @@ FROM nginx:1.17.4
 RUN rm /etc/nginx/conf.d/default.conf
 COPY ./${WEB_TEMPLATE} /etc/nginx/conf.d/${WEB_TEMPLATE}
 COPY ./nginx.conf /etc/nginx/nginx.conf
-COPY ../../public /etc/nginx/www
+COPY ./public /etc/nginx/www
 
 ENV DOLLAR $
 
