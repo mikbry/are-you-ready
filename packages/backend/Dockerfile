@@ -11,4 +11,6 @@ RUN yarn
 
 # RUN yarn compile
 
+EXPOSE ${APP_BACKEND_PORT}
+
 CMD yarn start
