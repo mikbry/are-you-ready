@@ -1,4 +1,4 @@
-FROM nginx:1.17.4
+FROM nginx:1.17.10-alpine
 
 ENV DOLLAR $
 
