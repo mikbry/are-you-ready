@@ -2,7 +2,7 @@
 
 build:
   docker:
-    web: infra/nginx/Dockerfile
+    web: www/Dockerfile
     app: packages/backend/Dockerfile-dev
     
 release:

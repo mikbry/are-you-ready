@@ -60,9 +60,9 @@ services:
       - private
       - public
     volumes:
-      - ../public:/etc/nginx/www
-      - ./letsencrypt:/etc/letsencrypt
-      - ./certs:/etc/nginx/certs
+      - ../www/public:/etc/nginx/www
+      - ../lwww/etsencrypt:/etc/letsencrypt
+      - ../www/certs:/etc/nginx/certs
     environment:
       - APP_FRONT_DOMAIN
       - APP_API_DOMAIN
