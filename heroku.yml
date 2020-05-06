@@ -4,9 +4,7 @@ build:
   docker:
     web: infra/nginx/Dockerfile
     app: packages/backend/Dockerfile-dev
-  command:
-    - cp -rf ./public ./infra
-  
+    
 release:
   image: web
     
