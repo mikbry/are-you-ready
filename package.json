@@ -11,7 +11,6 @@
   ],
   "private": true,
   "scripts": {
-    "start": "serve packages/client/src",
     "test": "env-cmd  -x echo \\$APP_NAME",
     "docker:clean": "docker-compose -f ./infra/docker-compose.dev.yml rm && docker-compose -f ./infra/docker-compose.dev.yml pull",
     "docker:start": "docker-compose -f ./infra/docker-compose.dev.yml up",
