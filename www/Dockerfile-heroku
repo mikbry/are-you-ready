@@ -1,14 +1,14 @@
 FROM nginx:1.17.4
 ARG WEB_CONF
 ARG WEB_TEMPLATE
-ARG PORT
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
-RUN echo "${WEB_CONF} ${WEB_TEMPLATE}"
 RUN rm -rf /etc/nginx/nginx.conf
 RUN rm -rf /etc/nginx/conf.d/default.conf
 COPY ./${WEB_TEMPLATE} /etc/nginx/conf.d/${WEB_TEMPLATE}
 COPY ./${WEB_CONF} /etc/nginx/nginx.conf
 ADD ./public /etc/nginx/www
+
+ENV DOLLAR $
 
 CMD ["/bin/bash", "-c", "envsubst < /etc/nginx/conf.d/${WEB_TEMPLATE} > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
