@@ -1,6 +1,8 @@
 FROM nginx:1.17.4
+ARG WEB_CONF
+ARG WEB_TEMPLATE
 
-ENV DOLLAR $
+# ENV DOLLAR $
 
 RUN echo "${WEB_CONF} ${WEB_TEMPLATE}"
 RUN rm -rf /etc/nginx/nginx.conf
