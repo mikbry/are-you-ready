@@ -1,6 +1,13 @@
 # Heroku deployment test
 
 build:
+  config:
+    APP_NAME: AYR
+    APP_BACKEND_PORT: 3032
+    WEB_TEMPLATE: default.template
+    WEB_CONF: nginx.conf
+    COMPOSE_PROJECT_NAME: Areyouready
+    IMAGE_VERSION: latest
   docker:
     web: www/Dockerfile
     app: packages/backend/Dockerfile-dev
