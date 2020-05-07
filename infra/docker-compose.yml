@@ -60,7 +60,7 @@ services:
       - APP_FRONT_DOMAIN
       - APP_API_DOMAIN
       - APP_NAME
-      - APP_BACKEND_PORT
+      - APP_BACKEND_URL
       - APP_UPLOAD_MAXSIZE
 certbot:
     image: certbot/certbot
