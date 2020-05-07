@@ -113,7 +113,8 @@ jobs:
             HEROKU_API_KEY : ${{ secrets.HEROKU_API_KEY }}
         run : |
             docker login --username=_ --password $HEROKU_API_KEY $HEROKU_REGISTRY_URL
-            docker ps
+            docker image ls
+            docker build --file ./infra/nginx/Dockerfile . --tag $IMAGE_NAME_WEB
             docker tag $IMAGE_NAME_WEB registry.heroku.com/are-you-ready/web
             docker push registry.heroku.com/are-you-ready-live/web
             export HEROKU_API_KEY=$HEROKU_API_KEY
