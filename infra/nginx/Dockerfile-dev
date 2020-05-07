@@ -1,0 +1,11 @@
+FROM nginx:1.17.10-alpine
+
+RUN rm -rf /etc/nginx/nginx.conf
+RUN rm -rf /etc/nginx/conf.d/default.conf
+COPY ./default.template /etc/nginx/conf.d/default.template
+COPY ./default.nossl.template /etc/nginx/conf.d/default.nossl.template
+COPY ./nginx.conf /etc/nginx/nginx.conf
+
+ENV DOLLAR $
+
+CMD ["/bin/bash", "-c", "envsubst < /etc/nginx/conf.d/${WEB_TEMPLATE} > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]

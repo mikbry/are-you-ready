@@ -10,6 +10,7 @@ public/ext
 public/upload
 infra/.env
 infra/certs
+infra/letsencrypt
 .env
 .nyc_output
 cov
