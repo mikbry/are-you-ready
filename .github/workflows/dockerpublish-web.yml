@@ -14,7 +14,7 @@ on:
   pull_request:
 
 env:
-  IMAGE_NAME: ${{ github.event.repository.name }}:web
+  IMAGE_NAME: web
 
 jobs:
   # Run tests.
