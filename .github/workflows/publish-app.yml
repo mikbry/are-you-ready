@@ -110,13 +110,19 @@ jobs:
       - name: Publish to heroku
         env : 
             HEROKU_REGISTRY_URL: registry.heroku.com
+            HEROKU_APP_WEB: are-you-ready-live
             HEROKU_API_KEY : ${{ secrets.HEROKU_API_KEY }}
         run : |
             docker login --username=_ --password $HEROKU_API_KEY $HEROKU_REGISTRY_URL
-            echo VERSION=$VERSION
-            docker tag $IMAGE_NAME_WEB registry.heroku.com/are-you-ready/web:latest
-            docker push registry.heroku.com/are-you-ready-live/web:latest
+            IMAGE_ID=HEROKU_REGISTRY_URL/HEROKU_APP_WEB/$IMAGE_NAME_API
+            VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+            [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+            # Use Docker `latest` tag convention
+            [ "$VERSION" == "master" ] && VERSION=latest
+            docker tag $IMAGE_NAME_WEB $IMAGE_ID:$VERSION
+            docker push $IMAGE_ID:$VERSION
             export HEROKU_API_KEY=$HEROKU_API_KEY
             heroku container:login
-            heroku container:release web --app are-you-ready-live
-            heroku ps:scale web=1 --app are-you-ready-live
+            heroku container:release web --app HEROKU_APP_WEB
+            heroku ps:scale web=1 --app HEROKU_APP_WEB
