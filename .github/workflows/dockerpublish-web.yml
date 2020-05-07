@@ -14,7 +14,8 @@ on:
   pull_request:
 
 env:
-  IMAGE_NAME: web
+  IMAGE_NAME_WEB: web
+  IMAGE_NAME_API: api  
 
 jobs:
   # Run tests.
@@ -32,6 +33,7 @@ jobs:
             docker-compose --file docker-compose.test.yml run sut
           else
             docker build --file ./infra/nginx/Dockerfile .
+            docker build --file ./packages/backend/Dockerfile .
           fi
 
   # Push image to GitHub Packages.
@@ -46,15 +48,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Build image
-        run: docker build --file ./infra/nginx/Dockerfile . --tag $IMAGE_NAME
+# Do Web Image
+      - name: Build Web image
+        run: docker build --file ./infra/nginx/Dockerfile . --tag $IMAGE_NAME_WEB
 
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
 
-      - name: Push image
+      - name: Push Web image
         run: |
-          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME_WEB
           
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
@@ -71,5 +74,34 @@ jobs:
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
 
-          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker tag $IMAGE_NAME_WEB $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
+          
+# Do API Image
+      - name: Build Api image
+        run: docker build --file ./packages/backend/Dockerfile . --tag $IMAGE_NAME_API
+
+      - name: Log into registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+
+      - name: Push Api image
+        run: |
+          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME_API
+          
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=latest
+
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+
+          docker tag $IMAGE_NAME_API $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION          
