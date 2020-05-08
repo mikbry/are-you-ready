@@ -10,9 +10,7 @@
     "start": "node src/index.js"
   },
   "dependencies": {
-    "websocket": "^1.0.31"
-  },
-  "engines": {
-    "node": "12"
+    "websocket": "^1.0.31",
+    "ws": "^7.2.5"
   }
 }

@@ -1,5 +1,5 @@
 const http = require('http');
-const server = require('websocket').server;
+const { Server } = require('ws');
 
 const httpServer = http.createServer(() => { });
 const port = process.env.APP_BACKEND_PORT | 3032;
@@ -7,25 +7,25 @@ httpServer.listen(port, () => {
   console.log('Server listening at port ' + port);
 });
 
-const wsServer = new server({
+const wss = new Server({
   httpServer,
 });
 
 let clients = [];
 
-wsServer.on('request', request => {
-  const connection = request.accept();
+wss.on('connection', ws => {
   const id = (Math.random() * 10000);
-  clients.push({ connection, id });
+  clients.push({ ws, id });
+  console.log('Client connected', id);
 
-  connection.on('message', message => {
+  ws.on('message', message => {
     console.log(message);
     clients
       .filter(client => client.id !== id)
       .forEach(client => client.connection.send(message.utf8Data));
   });
 
-  connection.on('close', () => {
+  ws.on('close', () => {
     clients = clients.filter(client => client.id !== id);
   });
 });
