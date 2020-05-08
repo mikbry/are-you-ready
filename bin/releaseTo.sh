@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #  Copyright (C) 2020 Mik BRY                                         
 #  mbry@miklabs.com
@@ -25,7 +25,7 @@
 #
 # If permission denied
 # chmod 755 releaseTo.sh
-echo "start releaseTo $#"
+echo "start releaseTo $@"
 
 PARAMS=""
 REGISTRY="github"
@@ -35,7 +35,7 @@ NAME="AppName"
 # For testing purpose
 GIT_REF="master"
 
-echo "before releaseTo $#"
+echo "before releaseTo $@"
 
 function help () {
     echo "Publish an image to a Docker registry server"
