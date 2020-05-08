@@ -37,8 +37,7 @@ GIT_REF="master"
 
 echo "before releaseTo $#"
 
-function help()
-{
+function help () {
     echo "Publish an image to a Docker registry server"
     echo ""
     echo "Syntax: releaseTo image [-h|r|f|n]"
