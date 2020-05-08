@@ -66,7 +66,7 @@
 
   const addMessageHandler = (signaling, peerConnection) => {
     signaling.onmessage = async (message) => {
-      const data = JSON.parse(message);
+      const data = JSON.parse(message.data);
 
       if (!data) {
         return;
