@@ -32,11 +32,6 @@ REGISTRY="github"
 FILE="Dockerfile"
 NAME="AppName"
 
-# For testing purpose
-GIT_REF="master"
-
-echo "before releaseTo $@"
-
 function help () {
     echo "Publish an image to a Docker registry server"
     echo ""
@@ -52,8 +47,6 @@ function help () {
 REGISTRY=""
 FILE=""
 NAME=""
-
-echo "releaseTo $#"
 
 # Inspiration : https://medium.com/@Drew_Stokes/bash-argument-parsing-54f3b81a6a8f
 while (( "$#" )); do
@@ -108,9 +101,6 @@ fi
 # TODO get first image
 IMAGE_NAME="$(echo "${PARAMS}" | tr -d '[:space:]')";
 
-
-echo "releaseTo : image=$IMAGE_NAME";
-
 REGISTRY_SERVER=""
 
 ## REGISTRY SERVER
@@ -137,7 +127,7 @@ elif [ "$REGISTRY" == "heroku" ]; then
     echo "Error: Env HEROKU_API_KEY is undefined"
     exit 1
   fi
-  docker login --username=_ --password $HEROKU_API_KEY $REGISTRY_SERVER
+  echo "$HEROKU_API_KEY" | docker login $REGISTRY_SERVER --username=_  --password-stdin
 else
   echo "Error: Argument for registry is unknown $REGISTRY should be 'github' or 'heroku'"
   exit 1
@@ -155,9 +145,12 @@ fi
 
 IMAGE_ID=$REGISTRY_SERVER/$NAME/$IMAGE_NAME
 VERSION=$GIT_REF
-#VERSION=$(echo "$GIT_REF" | sed -e 's,.*/\(.*\),\1,')
-# [[ "${GIT_REF" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-# [ "$VERSION" == "master" ] && VERSION=latest
+VERSION=$(echo "$GIT_REF" | sed -e 's,.*/\(.*\),\1,')
+[[ "$GIT_REF" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+[ "$VERSION" == "master" ] && VERSION=latest
+
+
+echo "releaseTo : image=$IMAGE_NAME imageId=$IMAGE_ID version=$VERSION"
 
 if [ -n "$FILE" ]; then
   docker build --file $FILE . --tag $IMAGE_NAME
