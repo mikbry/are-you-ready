@@ -93,7 +93,7 @@ while (( "$#" )); do
   shift
 done
 
-if [ -z "$PARAMS" ] && [ -z "$NAME" ] && [ -z "$REGISTRY" ]; then
+if [ -z "$PARAMS" ] && [ -z "$REGISTRY" ]; then
   echo "Error: image, --name/-n and --registry/-r should be provided"
   exit 1
 fi
@@ -135,6 +135,11 @@ fi
 
 if [ -z "$GIT_REF" ]; then
   echo "Error: Env GIT_REF is undefined"
+  exit 1
+fi
+
+if [ -z "$NAME" ]; then
+  echo "Error: --name/n should be provided"
   exit 1
 fi
 
