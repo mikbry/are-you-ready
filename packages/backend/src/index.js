@@ -2,8 +2,9 @@ const http = require('http');
 const server = require('websocket').server;
 
 const httpServer = http.createServer(() => { });
-httpServer.listen(process.env.APP_BACKEND_PORT, () => {
-  console.log('Server listening at port' + process.env.APP_BACKEND_PORT);
+const port = process.env.APP_BACKEND_PORT | 3032;
+httpServer.listen(port, () => {
+  console.log('Server listening at port ' + port);
 });
 
 const wsServer = new server({

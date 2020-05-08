@@ -7,6 +7,7 @@ RUN mkdir /app
 WORKDIR /app
 
 COPY ./packages/backend /app
+COPY ./bin/backend-entrypoint.sh /app/bin/backend-entrypoint.sh
 
 RUN yarn
 
