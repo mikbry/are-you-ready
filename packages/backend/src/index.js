@@ -7,10 +7,10 @@ app.use(express.static(__dirname + "/"));
 const httpServer = http.createServer(app);
 const port = process.env.APP_BACKEND_PORT | 3032;
 httpServer.listen(port, () => {
-  console.log('Server listening on port ' + port);
+  console.log(`Server listening on port $port} ${process.env.PORT}`);
 });
 
-/* const wss = new Server({
+const wss = new Server({
   server: httpServer,
 });
 
@@ -31,4 +31,4 @@ wss.on('connection', ws => {
   ws.on('close', () => {
     clients = clients.filter(client => client.id !== id);
   });
-}); */
+});
