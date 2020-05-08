@@ -100,10 +100,10 @@ fi
 
 # TODO get first image
 IMAGE_NAME="$(echo "${PARAMS}" | tr -d '[:space:]')";
+ID="$IMAGE_NAME"
 
 REGISTRY_SERVER=""
-
-## REGISTRY SERVER
+## SETUP REGISTRY SERVER
 if [ "$REGISTRY" == "github" ]; then
   if [ -z "$GIT_REPO" ]; then
     echo "Error: Env GIT_REPO is undefined"
@@ -127,6 +127,9 @@ elif [ "$REGISTRY" == "heroku" ]; then
     echo "Error: Env HEROKU_API_KEY is undefined"
     exit 1
   fi
+  # Dyno should be web
+  # TODO push to other Dyno types ?
+  ID="web"
   echo "$HEROKU_API_KEY" | docker login $REGISTRY_SERVER --username=_  --password-stdin
 else
   echo "Error: Argument for registry is unknown $REGISTRY should be 'github' or 'heroku'"
@@ -143,7 +146,7 @@ if [ -z "$NAME" ]; then
   exit 1
 fi
 
-IMAGE_ID=$REGISTRY_SERVER/$NAME/$IMAGE_NAME
+IMAGE_ID=$REGISTRY_SERVER/$NAME/$ID
 VERSION=$GIT_REF
 VERSION=$(echo "$GIT_REF" | sed -e 's,.*/\(.*\),\1,')
 [[ "$GIT_REF" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
