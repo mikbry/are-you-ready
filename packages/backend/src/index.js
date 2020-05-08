@@ -25,7 +25,7 @@ wss.on('connection', ws => {
     console.log(message);
     clients
       .filter(client => client.id !== id)
-      .forEach(client => client.connection.send(message.utf8Data));
+      .forEach(client => client.ws.send(message.utf8Data));
   });
 
   ws.on('close', () => {
