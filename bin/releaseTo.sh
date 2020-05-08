@@ -25,13 +25,17 @@
 #
 # If permission denied
 # chmod 755 releaseTo.sh
+echo "start releaseTo $#"
 
 PARAMS=""
 REGISTRY="github"
 FILE="Dockerfile"
 NAME="AppName"
 
+# For testing purpose
 GIT_REF="master"
+
+echo "before releaseTo $#"
 
 function help()
 {
