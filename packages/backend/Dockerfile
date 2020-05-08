@@ -6,7 +6,7 @@ ENV NODE_ENV=${NODE_ENV}
 RUN mkdir /app
 WORKDIR /app
 
-COPY . /app
+COPY ./packages/backend /app
 
 RUN yarn
 
@@ -14,4 +14,5 @@ RUN yarn
 
 EXPOSE ${APP_BACKEND_PORT}
 
+ENTRYPOINT ["./bin/backend-entrypoint.sh"]
 CMD yarn start

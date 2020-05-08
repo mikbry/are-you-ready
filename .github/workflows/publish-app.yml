@@ -54,11 +54,11 @@ jobs:
 # Release Web Image
       - name: Build and Push Web image
         run: |
-          ./bin/releaseTo.sh web --file ./infra/nginx/Dockerfile -r github           
+          ./bin/releaseTo.sh $IMAGE_NAME_WEB --file ./infra/nginx/Dockerfile -r github           
 # Release API Image
       - name: Build and Push Api image
         run: |
-          ./bin/releaseTo.sh api --file ./packages/backend/Dockerfile -r github          
+          ./bin/releaseTo.sh $IMAGE_NAME_API --file ./packages/backend/Dockerfile -r github          
 
 # Release to Heroku
       - name: Publish to heroku
@@ -68,3 +68,4 @@ jobs:
             HEROKU_API_KEY : ${{ secrets.HEROKU_API_KEY }}
         run : |
           ./bin/releaseTo.sh $IMAGE_NAME_WEB -n $HEROKU_APP_WEB -r heroku
+          ./bin/releaseTo.sh $IMAGE_NAME_API -n $HEROKU_APP_API -r heroku

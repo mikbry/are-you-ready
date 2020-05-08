@@ -4,7 +4,7 @@
 #  mbry@miklabs.com
 # LICENCE MIT
 # See LICENSE.md
-#
+
 # releaseTo image1 -r github -f Dockerfile -n appName
 # image a serie of images
 # -r --registry : Mandatory  = github | heroku (TODO : Docker, GCloud, any ...)
