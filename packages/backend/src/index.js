@@ -1,14 +1,17 @@
 const http = require('http');
+const express = require('express');
 const { Server } = require('ws');
 
-const httpServer = http.createServer(() => { });
+const app = express();
+app.use(express.static(__dirname + "/"));
+const httpServer = http.createServer(app);
 const port = process.env.APP_BACKEND_PORT | 3032;
 httpServer.listen(port, () => {
   console.log('Server listening at port ' + port);
 });
 
 const wss = new Server({
-  httpServer,
+  server: httpServer,
 });
 
 let clients = [];
