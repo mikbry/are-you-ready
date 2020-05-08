@@ -5,7 +5,7 @@ const { Server } = require('ws');
 const app = express();
 app.use(express.static(__dirname + "/"));
 const httpServer = http.createServer(app);
-const port = process.env.PORT | process.env.APP_BACKEND_PORT | 3032;
+const port = process.env.APP_BACKEND_PORT || 3032;
 httpServer.listen(port, () => {
   console.log(`Server listening on port ${port} `, process.env.PORT);
 });
