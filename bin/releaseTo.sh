@@ -33,7 +33,7 @@ NAME="AppName"
 
 GIT_REF="master"
 
-help()
+function help()
 {
     echo "Publish an image to a Docker registry server"
     echo ""
@@ -49,6 +49,8 @@ help()
 REGISTRY=""
 FILE=""
 NAME=""
+
+echo "releaseTo $#"
 
 # Inspiration : https://medium.com/@Drew_Stokes/bash-argument-parsing-54f3b81a6a8f
 while (( "$#" )); do
