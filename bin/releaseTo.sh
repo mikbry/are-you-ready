@@ -56,7 +56,7 @@ while (( "$#" )); do
       exit
       ;;
     -r | --registry)
-      if [ -n "$2" ]; then
+      if [[ -n "$2" ]]; then
         REGISTRY=$2
         shift
       else
@@ -74,7 +74,7 @@ while (( "$#" )); do
       fi
       ;;       
     -n | --name)
-      if [ -n "$2" ]; then
+      if [[ -n "$2" ]]; then
         NAME=$2
         shift
       else
@@ -93,27 +93,30 @@ while (( "$#" )); do
   shift
 done
 
-if [ -z "$PARAMS" ] && [ -z "$REGISTRY" ]; then
-  echo "Error: image, --name/-n and --registry/-r should be provided"
+if [[ -z "$PARAMS" ]] && [[ -z "$REGISTRY" ]]; then
+  echo "Error: image and --registry/-r should be provided"
   exit 1
 fi
 
 # TODO get first image
-IMAGE_NAME=$PARAMS;
+IMAGE_NAME="$(echo "${PARAMS}" | tr -d '[:space:]')";
+
+
+echo "releaseTo : image=$IMAGE_NAME";
 
 REGISTRY_SERVER=""
 
 ## REGISTRY SERVER
-if [ "$REGISTRY" == "github" ]; then
-  if [ -z "$GIT_REPO" ]; then
+if [[ "$REGISTRY" == "github" ]]; then
+  if [[ -z "$GIT_REPO" ]]; then
     echo "Error: Env GIT_REPO is undefined"
     exit 1
   fi
-  if [ -z "$GIT_USERNAME" ]; then
+  if [[ -z "$GIT_USERNAME" ]]; then
     echo "Error: Env GIT_USERNAME is undefined"
     exit 1
   fi
-   if [ -z "$GITHUB_TOKEN" ]; then
+   if [[ -z "$GITHUB_TOKEN" ]]; then
     echo "Error: Env GITHUB_TOKEN is undefined"
     exit 1
   fi
@@ -133,12 +136,12 @@ else
   exit 1
 fi
 
-if [ -z "$GIT_REF" ]; then
+if [[ -z "$GIT_REF" ]]; then
   echo "Error: Env GIT_REF is undefined"
   exit 1
 fi
 
-if [ -z "$NAME" ]; then
+if [[ -z "$NAME" ]]; then
   echo "Error: --name/n should be provided"
   exit 1
 fi
@@ -155,7 +158,7 @@ fi
 docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
 docker push $IMAGE_ID:$VERSION
 
-if [ "$REGISTRY" == "heroku" ]; then
+if [[ "$REGISTRY" == "heroku" ]]; then
   export HEROKU_API_KEY=$HEROKU_API_KEY
   heroku container:login
   heroku container:release web --app $NAME
