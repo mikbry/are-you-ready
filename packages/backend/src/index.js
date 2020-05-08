@@ -1,6 +1,6 @@
 const http = require('http');
 const express = require('express');
-// const { Server } = require('ws');
+const { Server } = require('ws');
 
 const app = express();
 app.use(express.static(__dirname + "/"));
