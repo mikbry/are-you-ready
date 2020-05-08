@@ -16,7 +16,10 @@ on:
 env:
   IMAGE_NAME_WEB: web
   IMAGE_NAME_API: api  
-
+  GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+  GIT_USERNAME: "${{ github.actor }}"
+  GIT_REF: "${{ github.ref }}"
+  GIT_REPO: "${{ github.repository }}"
 jobs:
   # Run tests.
   # See also https://docs.docker.com/docker-hub/builds/automated-testing/
@@ -48,82 +51,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-# Do Web Image
-      - name: Build Web image
-        run: docker build --file ./infra/nginx/Dockerfile . --tag $IMAGE_NAME_WEB
+# Release Web Image
+      - name: Build and Push Web image
+        run: ./bin/releaseTo.sh $IMAGE_NAME_WEB --file ./infra/nginx/Dockerfile -r github           
+# Release API Image
+      - name: Build and Push Api image
+        run: ./bin/releaseTo.sh $IMAGE_NAME_API --file ./packages/backend/Dockerfile -r github          
 
-      - name: Log into registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-
-      - name: Push Web image
-        run: |
-          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME_WEB
-          
-          # Change all uppercase to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-
-          # Strip git ref prefix from version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-
-          # Strip "v" prefix from tag name
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-
-          # Use Docker `latest` tag convention
-          [ "$VERSION" == "master" ] && VERSION=latest
-
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
-
-          docker tag $IMAGE_NAME_WEB $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
-          
-# Do API Image
-      - name: Build Api image
-        run: docker build --file ./packages/backend/Dockerfile . --tag $IMAGE_NAME_API
-
-      - name: Log into registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-
-      - name: Push Api image
-        run: |
-          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME_API
-          
-          # Change all uppercase to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-
-          # Strip git ref prefix from version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-
-          # Strip "v" prefix from tag name
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-
-          # Use Docker `latest` tag convention
-          [ "$VERSION" == "master" ] && VERSION=latest
-
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
-
-          docker tag $IMAGE_NAME_API $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION          
-
-# Publish to Heroku
+# Release to Heroku
       - name: Publish to heroku
         env : 
-            HEROKU_REGISTRY_URL: registry.heroku.com
             HEROKU_APP_WEB: are-you-ready-live
             HEROKU_APP_API: are-you-ready-api
             HEROKU_API_KEY : ${{ secrets.HEROKU_API_KEY }}
-        run : |
-            IMAGE_ID_WEB=$HEROKU_REGISTRY_URL/$HEROKU_APP_WEB/$IMAGE_NAME_WEB
-            IMAGE_ID_API=$HEROKU_REGISTRY_URL/$HEROKU_APP_WEB/$IMAGE_NAME_API
-            VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-            [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-            [ "$VERSION" == "master" ] && VERSION=latest
-  
-            docker login --username=_ --password $HEROKU_API_KEY $HEROKU_REGISTRY_URL
-            docker tag $IMAGE_NAME_WEB $IMAGE_ID_WEB:$VERSION
-            docker push $IMAGE_ID_WEB:$VERSION
-            export HEROKU_API_KEY=$HEROKU_API_KEY
-            heroku container:login
-            heroku container:release web --app $HEROKU_APP_WEB
-            heroku ps:scale web=1 --app $HEROKU_APP_WEB
+        run : ./bin/releaseTo.sh $IMAGE_NAME_WEB -n $HEROKU_APP_WEB -r heroku
