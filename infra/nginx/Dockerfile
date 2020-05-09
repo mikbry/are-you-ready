@@ -18,6 +18,6 @@ COPY ./infra/nginx/default.template /etc/nginx/conf.d/default.template
 COPY ./infra/nginx/default.nossl.template /etc/nginx/conf.d/default.nossl.template
 COPY ./infra/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./public /etc/nginx/www
-COPY --from=builder ./dist /etc/nginx/www
+COPY --from=builder /app/dist /etc/nginx/www
 
 CMD ["/bin/bash", "-c", "envsubst < /etc/nginx/conf.d/${WEB_TEMPLATE} > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
