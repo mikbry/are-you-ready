@@ -8,6 +8,9 @@
 *package-lock.json*
 public/ext
 public/upload
+public/index.html
+public/index.js
+public/styles.css
 infra/.env
 infra/certs
 infra/letsencrypt
