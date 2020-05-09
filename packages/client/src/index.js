@@ -17,7 +17,7 @@
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
       showChatRoom();
 
-      const signaling = new WebSocket('wss://192.168.1.21/api');
+      const signaling = new WebSocket('wss://are-you-ready-api.herokuapp.com');
       signaling.onopen = () => {
         const peerConnection = createPeerConnection(signaling);
 

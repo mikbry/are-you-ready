@@ -4,7 +4,7 @@
   "description": "Are you ready ? server",
   "main": "index.js",
   "author": "Mik",
-  "license": "See license",
+  "license": "SEE LICENSE IN  LICENSE.md",
   "private": true,
   "scripts": {
     "start": "node src/index.js"
@@ -13,8 +13,5 @@
     "express": "^4.17.1",
     "websocket": "^1.0.31",
     "ws": "^7.2.5"
-  },
-  "engines": {
-    "node": "12.x"
   }
 }

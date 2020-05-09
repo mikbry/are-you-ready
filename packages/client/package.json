@@ -1,0 +1,13 @@
+{
+  "name": "@are-you-ready/client",
+  "version": "0.0.0",
+  "description": "Are you ready Client",
+  "main": "index.js",
+  "author": "Mik mbry@miklabs.com",
+  "license": "SEE LICENSE IN  LICENSE.md",
+  "scripts": {
+    "clean": "rimraf dist && mkdir dist",
+    "compile": "yarn clean && cp -r src/* dist && cp -r public/* dist",
+    "start": "yarn compile && npx serve dist"
+  }
+}
