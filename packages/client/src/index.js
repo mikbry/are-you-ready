@@ -14,7 +14,7 @@
 
   const startChat = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true }, video: {width: {exact: 1280}, height: {exact: 720}} });
       showChatRoom();
 
       const signaling = new WebSocket('wss://are-you-ready-api.herokuapp.com');
@@ -71,7 +71,10 @@
       if (!data) {
         return;
       }
-
+      if (RTCRtpSender.getCapabilities) {
+        const capabilityCodecs = RTCRtpSender.getCapabilities('video').codecs;
+        console.log('capabilities=', capabilityCodecs);  
+      }
       const { message_type, content } = data;
       try {
         if (message_type === MESSAGE_TYPE.CANDIDATE && content) {
@@ -99,6 +102,7 @@
 
   const createAndSendOffer = async (signaling, peerConnection) => {
     const offer = await peerConnection.createOffer();
+    console.log('sdp=', offer.sdp);
     await peerConnection.setLocalDescription(offer);
 
     signaling.send(JSON.stringify({ message_type: MESSAGE_TYPE.SDP, content: offer }));
